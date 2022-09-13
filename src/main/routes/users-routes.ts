@@ -1,9 +1,9 @@
-import { Request, Response, Router } from 'express'
+import { Router } from 'express'
+import { adaptRoute } from '../adapters/express-routes-adapter'
+import { makeCreateUserController } from '../factory/create-user/create-user-controller-factory'
 
 const router = Router()
 
-router.get('/', (request: Request, response: Response) => {
-  response.json({ message: 'Hello World' })
-})
+router.post('/', adaptRoute(makeCreateUserController()))
 
 export default router
