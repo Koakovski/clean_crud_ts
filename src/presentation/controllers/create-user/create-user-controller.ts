@@ -1,15 +1,35 @@
 import {
   IController,
   HttpRequest,
-  HttpReponse
+  HttpReponse,
+  IValidation
 } from './create-user-controller-protocols'
-import { ok, serverError } from '@/presentation/helpers/http-helpers'
+import { badRequest, ok, serverError } from '@/presentation/helpers/http-helpers'
+import { ICreateUser } from '@/domain/usecases/user/create-user'
 
 export class CreateUserController implements IController {
+  constructor (
+    private readonly validation: IValidation,
+    private readonly CreateUser: ICreateUser
+  ) { }
+
   async handle (httpRequest: HttpRequest): Promise<HttpReponse> {
     try {
-      const body = httpRequest.body
-      return ok({ body })
+      // VALIDATE FIELDS
+      const error = this.validation.validate(httpRequest.body)
+      if (error) {
+        return badRequest(error)
+      }
+
+      // CREATE USER
+      const { name, email } = httpRequest.body
+
+      const createUserResult = await this.CreateUser.create({ name, email })
+      if (createUserResult instanceof Error) {
+        return badRequest(createUserResult)
+      }
+
+      return ok({ user: createUserResult })
     } catch (error) {
       return serverError(error)
     }
