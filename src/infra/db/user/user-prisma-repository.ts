@@ -1,4 +1,5 @@
 import { ICreateUserRepository } from '@/data/protocols/create-user-repository'
+import { IFindAllUsersRepository } from '@/data/protocols/find-all-users-repository'
 import { IFindUserByCpfRepository } from '@/data/protocols/find-user-by-cpf-repository'
 import { IFindUserByEmailRepository } from '@/data/protocols/find-user-by-email-repository'
 import { IFindUserByIdRepository } from '@/data/protocols/find-user-by-id-repository'
@@ -11,7 +12,8 @@ export class UserPrismaRepository implements
   ICreateUserRepository,
   IFindUserByEmailRepository,
   IFindUserByCpfRepository,
-  IFindUserByIdRepository {
+  IFindUserByIdRepository,
+  IFindAllUsersRepository {
   private prismaClient = new PrismaClient()
 
   async createUser (createUserParams: CreateUserParams): Promise<UserModel> {
@@ -36,6 +38,11 @@ export class UserPrismaRepository implements
   async findById (id: string): Promise<UserModel | null> {
     const user = await this.prismaClient.user.findFirst({ where: { id: Number(id) } })
     return user && PrismaHelper.map(user)
+  }
+
+  async findAll (): Promise<UserModel[]> {
+    const users = await this.prismaClient.user.findMany()
+    return PrismaHelper.mapAll(users)
   }
 
 }
