@@ -1,5 +1,10 @@
 {
   "compilerOptions": {
+    "sourceMap": true,
+    "strict": true,
+    "lib": [
+      "esnext"
+    ],
     "outDir": "dist",
     "module": "commonjs",
     "target": "ES2019",
