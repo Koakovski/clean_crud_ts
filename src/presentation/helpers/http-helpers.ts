@@ -16,6 +16,13 @@ export const badRequest = (error: Error): HttpReponse => {
   }
 }
 
+export const notFound = (error: Error): HttpReponse => {
+  return {
+    statusCode: 404,
+    body: error
+  }
+}
+
 // 5.X.X
 export const serverError = (error: any): HttpReponse => {
   return {

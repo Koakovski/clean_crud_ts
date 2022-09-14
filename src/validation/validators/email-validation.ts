@@ -1,4 +1,4 @@
-import { InvalidFieldError } from '@/presentation/errors/invalid-field-error'
+import { InvalidParamError } from '@/presentation/errors'
 import { IValidation } from '@/presentation/protocols'
 import { IEmailValidator } from '../protocols/email-validator'
 
@@ -11,7 +11,7 @@ export class EmailValidation implements IValidation {
   validate (input: any): Error | null {
     const isValid = this.emailValidator.isValidEmail(input[this.fieldName])
     if (!isValid) {
-      return new InvalidFieldError(this.fieldName)
+      return new InvalidParamError(this.fieldName)
     }
     return null
   }
