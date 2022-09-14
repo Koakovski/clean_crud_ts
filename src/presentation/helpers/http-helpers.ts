@@ -17,7 +17,7 @@ export const badRequest = (error: Error): HttpReponse => {
 }
 
 // 5.X.X
-export const serverError = (error: Error): HttpReponse => {
+export const serverError = (error: any): HttpReponse => {
   return {
     statusCode: 500,
     body: error

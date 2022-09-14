@@ -36,7 +36,7 @@ export class CreateUserController implements IController {
 
       return ok({ user })
     } catch (error) {
-      return serverError(error)
+      return serverError(error as Error)
     }
   }
 }

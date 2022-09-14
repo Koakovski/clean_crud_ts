@@ -1,4 +1,4 @@
-import { MissingFieldError } from '@/presentation/errors/missing-field-error'
+import { MissingFieldError } from '@/presentation/errors'
 import { IValidation } from '@/presentation/protocols'
 
 export class RequiredFieldValidation implements IValidation {
