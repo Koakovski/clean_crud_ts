@@ -1,3 +1,3 @@
-export interface IDeleteUserById {
+export interface IDeleteUser {
   delete: (id: string) => Promise<void>
 }

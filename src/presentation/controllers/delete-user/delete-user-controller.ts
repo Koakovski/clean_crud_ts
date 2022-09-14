@@ -6,12 +6,12 @@ import {
 } from './delete-user-controller-protocols'
 import { noContent, notFound, serverError } from '@/presentation/helpers/http-helpers'
 import { NotFoundError } from '@/presentation/errors'
-import { IDeleteUserById } from '@/domain/usecases/user/delete-user-by-id'
+import { IDeleteUser } from '@/domain/usecases/user/delete-user'
 
 export class DeleteUserController implements IController {
   constructor (
     private readonly findUserById: IFindUserById,
-    private readonly deleteUserById: IDeleteUserById
+    private readonly deleteUserById: IDeleteUser
   ) { }
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {

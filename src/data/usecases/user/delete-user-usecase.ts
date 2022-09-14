@@ -1,7 +1,7 @@
 import { IDeleteUserByIdRepository } from '@/data/protocols/delete-user-by-id-repository'
-import { IDeleteUserById } from '@/domain/usecases/user/delete-user-by-id'
+import { IDeleteUser } from '@/domain/usecases/user/delete-user'
 
-export class DeleteUserUseCase implements IDeleteUserById {
+export class DeleteUserUseCase implements IDeleteUser {
   constructor (
     private readonly deleteUserRepository: IDeleteUserByIdRepository
   ) { }

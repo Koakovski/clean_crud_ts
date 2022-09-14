@@ -9,6 +9,7 @@ export class CpfValidation implements IValidation {
   ) { }
 
   validate (input: any): Error | null {
+    if (!input[this.fieldName]) { return null }
     const isValid = this.cpfValidator.isValidCpf(input[this.fieldName])
     if (!isValid) {
       return new InvalidParamError(this.fieldName)

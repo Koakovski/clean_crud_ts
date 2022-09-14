@@ -1,0 +1,5 @@
+export * from '../../protocols'
+export * from '@/domain/usecases/user/update-user'
+export * from '@/domain/usecases/user/find-user-by-id'
+export * from '@/domain/usecases/user/find-user-by-email'
+export * from '@/domain/usecases/user/find-user-by-cpf'

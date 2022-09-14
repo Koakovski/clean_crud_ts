@@ -4,8 +4,10 @@ import { IFindAllUsersRepository } from '@/data/protocols/find-all-users-reposit
 import { IFindUserByCpfRepository } from '@/data/protocols/find-user-by-cpf-repository'
 import { IFindUserByEmailRepository } from '@/data/protocols/find-user-by-email-repository'
 import { IFindUserByIdRepository } from '@/data/protocols/find-user-by-id-repository'
+import { IUpdateUserByIdRepository } from '@/data/protocols/update-user-by-id-repository'
 import { UserModel } from '@/domain/models/user'
 import { CreateUserParams } from '@/domain/usecases/user/create-user'
+import { UpdateUserParams } from '@/domain/usecases/user/update-user'
 import { PrismaClient } from '@prisma/client'
 import { PrismaHelper } from '../helpers/prisma-helpers'
 
@@ -15,7 +17,8 @@ export class UserPrismaRepository implements
   IFindUserByCpfRepository,
   IFindUserByIdRepository,
   IFindAllUsersRepository,
-  IDeleteUserByIdRepository {
+  IDeleteUserByIdRepository,
+  IUpdateUserByIdRepository {
   private prismaClient = new PrismaClient()
 
   async createUser (createUserParams: CreateUserParams): Promise<UserModel> {
@@ -49,6 +52,17 @@ export class UserPrismaRepository implements
 
   async deleteById (id: string): Promise<void> {
     await this.prismaClient.user.delete({ where: { id: Number(id) } })
+  }
+
+  async updateById (id: string, updateUserParams: UpdateUserParams): Promise<UserModel> {
+    const { name, email, cpf } = updateUserParams
+
+    const user = await this.prismaClient.user.update({
+      where: { id: Number(id) },
+      data: { name, email, cpf }
+    })
+
+    return PrismaHelper.map(user)
   }
 
 }
