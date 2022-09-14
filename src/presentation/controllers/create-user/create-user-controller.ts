@@ -3,14 +3,16 @@ import {
   HttpRequest,
   HttpReponse,
   IValidation,
-  ICreateUser
+  ICreateUser,
+  IFindUserByEmail
 } from './create-user-controller-protocols'
 import { badRequest, ok, serverError } from '@/presentation/helpers/http-helpers'
-
+import { FieldInUseError } from '@/presentation/errors'
 export class CreateUserController implements IController {
   constructor (
     private readonly validation: IValidation,
-    private readonly CreateUser: ICreateUser
+    private readonly findUserByEmail: IFindUserByEmail,
+    private readonly createUser: ICreateUser
   ) { }
 
   async handle (httpRequest: HttpRequest): Promise<HttpReponse> {
@@ -21,15 +23,18 @@ export class CreateUserController implements IController {
         return badRequest(error)
       }
 
-      // CREATE USER
       const { name, email } = httpRequest.body
 
-      const createUserResult = await this.CreateUser.create({ name, email })
-      if (createUserResult instanceof Error) {
-        return badRequest(createUserResult)
+      // VERIFY IF EMAIL IS ALREADY IN USE
+      const userWithEmail = await this.findUserByEmail.find(email)
+      if (userWithEmail) {
+        return badRequest(new FieldInUseError('email'))
       }
 
-      return ok({ user: createUserResult })
+      // CREATE USER
+      const user = await this.createUser.create({ name, email })
+
+      return ok({ user })
     } catch (error) {
       return serverError(error)
     }
