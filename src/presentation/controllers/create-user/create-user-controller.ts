@@ -2,10 +2,10 @@ import {
   IController,
   HttpRequest,
   HttpReponse,
-  IValidation
+  IValidation,
+  ICreateUser
 } from './create-user-controller-protocols'
 import { badRequest, ok, serverError } from '@/presentation/helpers/http-helpers'
-import { ICreateUser } from '@/domain/usecases/user/create-user'
 
 export class CreateUserController implements IController {
   constructor (
