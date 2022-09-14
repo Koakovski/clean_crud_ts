@@ -1,4 +1,4 @@
-import { HttpReponse, HttpRequest, IController } from '@/presentation/protocols'
+import { HttpResponse, HttpRequest, IController } from '@/presentation/protocols'
 import { Request, Response } from 'express'
 
 export const adaptRoute = (controller: IController) => {
@@ -8,7 +8,7 @@ export const adaptRoute = (controller: IController) => {
       params: request.params
     }
 
-    const httpResponse: HttpReponse = await controller.handle(httpRequest)
+    const httpResponse: HttpResponse = await controller.handle(httpRequest)
 
     if (httpResponse.statusCode >= 200 && httpResponse.statusCode < 300) {
       return response.status(httpResponse.statusCode).json(httpResponse.body)

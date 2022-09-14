@@ -1,4 +1,4 @@
-import { makeFindAllUsersUsecase } from '@/main/factory/usecases/user/find-all-users/find-all-users-usecase'
+import { makeFindAllUsersUsecase } from '@/main/factory/usecases/user/find-all-users/find-all-users-usecase-factory'
 import { FindAllUsersController } from '@/presentation/controllers/find-all-users/find-all-users-controller'
 import { IController } from '@/presentation/protocols'
 

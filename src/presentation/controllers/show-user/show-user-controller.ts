@@ -2,7 +2,7 @@
 import {
   IController,
   HttpRequest,
-  HttpReponse,
+  HttpResponse,
   IFindUserById
 } from './show-user-controller-protocols'
 import { badRequest, notFound, ok, serverError } from '@/presentation/helpers/http-helpers'
@@ -13,7 +13,7 @@ export class ShowUserController implements IController {
     private readonly findUserById: IFindUserById
   ) { }
 
-  async handle (httpRequest: HttpRequest): Promise<HttpReponse> {
+  async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
       const { id } = httpRequest.params
       // FIND USER

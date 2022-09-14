@@ -1,4 +1,5 @@
 import { ICreateUserRepository } from '@/data/protocols/create-user-repository'
+import { IDeleteUserByIdRepository } from '@/data/protocols/delete-user-by-id-repository'
 import { IFindAllUsersRepository } from '@/data/protocols/find-all-users-repository'
 import { IFindUserByCpfRepository } from '@/data/protocols/find-user-by-cpf-repository'
 import { IFindUserByEmailRepository } from '@/data/protocols/find-user-by-email-repository'
@@ -13,7 +14,8 @@ export class UserPrismaRepository implements
   IFindUserByEmailRepository,
   IFindUserByCpfRepository,
   IFindUserByIdRepository,
-  IFindAllUsersRepository {
+  IFindAllUsersRepository,
+  IDeleteUserByIdRepository {
   private prismaClient = new PrismaClient()
 
   async createUser (createUserParams: CreateUserParams): Promise<UserModel> {
@@ -43,6 +45,10 @@ export class UserPrismaRepository implements
   async findAll (): Promise<UserModel[]> {
     const users = await this.prismaClient.user.findMany()
     return PrismaHelper.mapAll(users)
+  }
+
+  async deleteById (id: string): Promise<void> {
+    await this.prismaClient.user.delete({ where: { id: Number(id) } })
   }
 
 }

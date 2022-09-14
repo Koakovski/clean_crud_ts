@@ -1,7 +1,7 @@
 import {
   IController,
   HttpRequest,
-  HttpReponse,
+  HttpResponse,
   IValidation,
   ICreateUser,
   IFindUserByEmail,
@@ -17,7 +17,7 @@ export class CreateUserController implements IController {
     private readonly createUser: ICreateUser
   ) { }
 
-  async handle (httpRequest: HttpRequest): Promise<HttpReponse> {
+  async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
       // VALIDATE FIELDS
       const error = this.validation.validate(httpRequest.body)
