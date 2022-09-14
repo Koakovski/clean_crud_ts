@@ -1,5 +1,5 @@
 {
-  "name": "crud_ts_typeorm",
+  "name": "crud_ts_prisma",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",

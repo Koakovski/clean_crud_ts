@@ -4,7 +4,8 @@ import {
   HttpReponse,
   IValidation,
   ICreateUser,
-  IFindUserByEmail
+  IFindUserByEmail,
+  IFindUserByCpf
 } from './create-user-controller-protocols'
 import { badRequest, ok, serverError } from '@/presentation/helpers/http-helpers'
 import { FieldInUseError } from '@/presentation/errors'
@@ -12,6 +13,7 @@ export class CreateUserController implements IController {
   constructor (
     private readonly validation: IValidation,
     private readonly findUserByEmail: IFindUserByEmail,
+    private readonly findUserByCpf: IFindUserByCpf,
     private readonly createUser: ICreateUser
   ) { }
 
@@ -23,7 +25,7 @@ export class CreateUserController implements IController {
         return badRequest(error)
       }
 
-      const { name, email } = httpRequest.body
+      const { name, email, cpf } = httpRequest.body
 
       // VERIFY IF EMAIL IS ALREADY IN USE
       const userWithEmail = await this.findUserByEmail.find(email)
@@ -31,8 +33,14 @@ export class CreateUserController implements IController {
         return badRequest(new FieldInUseError('email'))
       }
 
+      // VERIFY IF CPF IS ALREADY IN USE
+      const userWithCpf = await this.findUserByCpf.find(cpf)
+      if (userWithCpf) {
+        return badRequest(new FieldInUseError('cpf'))
+      }
+
       // CREATE USER
-      const user = await this.createUser.create({ name, email })
+      const user = await this.createUser.create({ name, email, cpf })
 
       return ok({ user })
     } catch (error) {

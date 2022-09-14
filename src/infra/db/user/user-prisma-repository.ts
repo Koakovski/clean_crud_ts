@@ -1,25 +1,34 @@
 import { ICreateUserRepository } from '@/data/protocols/create-user-repository'
+import { IFindUserByCpfRepository } from '@/data/protocols/find-user-by-cpf-repository'
 import { IFindUserByEmailRepository } from '@/data/protocols/find-user-by-email-repository'
 import { UserModel } from '@/domain/models/user'
-import { CreateUserParams, ICreateUser } from '@/domain/usecases/user/create-user'
-import { IFindUserByEmail } from '@/domain/usecases/user/find-user-by-email'
+import { CreateUserParams } from '@/domain/usecases/user/create-user'
 import { PrismaClient } from '@prisma/client'
 import { PrismaHelper } from '../helpers/prisma-helpers'
 
-export class UserPrismaRepository implements IFindUserByEmailRepository, ICreateUserRepository {
+export class UserPrismaRepository implements
+  ICreateUserRepository,
+  IFindUserByEmailRepository,
+  IFindUserByCpfRepository {
   private prismaClient = new PrismaClient()
+
+  async createUser (createUserParams: CreateUserParams): Promise<UserModel> {
+    const { name, email, cpf } = createUserParams
+    const user = await this.prismaClient.user.create({
+      data: { name, email, cpf }
+    })
+
+    return user && PrismaHelper.map(user)
+  }
 
   async findByEmail (email: string): Promise<UserModel | null> {
     const user = await this.prismaClient.user.findFirst({ where: { email } })
     return user && PrismaHelper.map(user)
   }
 
-  async createUser (createUserParams: CreateUserParams): Promise<UserModel> {
-    const { name, email } = createUserParams
-    const user = await this.prismaClient.user.create({
-      data: { name, email }
-    })
-
+  async findByCpf (cpf: string): Promise<UserModel | null> {
+    const user = await this.prismaClient.user.findFirst({ where: { cpf } })
     return user && PrismaHelper.map(user)
   }
+
 }
