@@ -11,7 +11,7 @@ export const ok = (data: any): HttpReponse => {
 // 4.X.X
 export const badRequest = (error: Error): HttpReponse => {
   return {
-    statusCode: 404,
+    statusCode: 400,
     body: error
   }
 }
